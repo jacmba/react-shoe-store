@@ -9,6 +9,7 @@ export default function App() {
   const [size, setSize] = useState("");
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,6 +18,8 @@ export default function App() {
         setProducts(result);
       } catch (e) {
         setError(e);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -40,6 +43,10 @@ export default function App() {
 
   if (error) {
     throw error;
+  }
+
+  if (loading) {
+    return <h1>Loading...</h1>;
   }
 
   return (
