@@ -1,29 +1,18 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
-import { getProducts } from "./services/productService";
+import useFetch from "./hooks/useFetch";
 
 export default function App() {
   const [size, setSize] = useState("");
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getProducts("shoes");
-        setProducts(result);
-      } catch (e) {
-        setError(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  const {
+    data: products,
+    loading,
+    error,
+  } = useFetch("products?category=shoes");
 
   const filteredProducts = products.filter(
     (p) => size === "" || p.skus.find((s) => s.size === Number(size))
